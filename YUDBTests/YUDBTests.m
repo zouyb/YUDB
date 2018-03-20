@@ -7,6 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
+#import "YUUser.h"
 
 @interface YUDBTests : XCTestCase
 
@@ -24,16 +25,22 @@
     [super tearDown];
 }
 
-- (void)testExample {
-    // This is an example of a functional test case.
-    // Use XCTAssert and related functions to verify your tests produce the correct results.
-}
-
-- (void)testPerformanceExample {
-    // This is an example of a performance test case.
-    [self measureBlock:^{
-        // Put the code you want to measure the time of here.
-    }];
+- (void)testSaveUser {
+    YUUser *user = [[YUUser alloc] init];
+    user.username = @"张三";
+    user.age = 20;
+    // 保存user对象到数据库
+    BOOL succ = [user save];
+    if (succ) {
+        NSLog(@"保存成功");
+    } else {
+        NSLog(@"保存失败");
+    }
+    // 从数据库查询所有User对象
+    NSArray *users = [YUUser findAll];
+    for (YUUser *u in users) {
+        NSLog(@"%@-%d", u.username, u.age);
+    }
 }
 
 @end
